@@ -10,4 +10,5 @@ phases:
       - echo $CODEBUILD_SRC_DIR
 artifacts:
   files:
-    - '**/*'
+    - '/codebuild/output/src3542460914/src/target/*'
+  name: myname-$(date +%Y-%m-%d) 
