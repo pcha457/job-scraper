@@ -9,4 +9,4 @@ phases:
       - echo Build started on `date`
 artifacts:
   files:
-    - '**/*'
+    - 'BuildArtif/*'
