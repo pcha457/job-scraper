@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import json
 import requests
+from secret_manager import SecretsHelper
 
 
 #set variables for url
@@ -10,7 +11,9 @@ response = requests.get (url)
 data = response.json()["data"]
 
 #connect to slack 
-webook = "https://hooks.slack.com/services/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"
+#secrect_name: pennyc-slack-webhook
+secrets_helper = SecretsHelper ()
+webhook = secrets_helper.get_secret()
 headers  = {'Content-type': 'application/x-www-form-urlencoded'}
 
 #adding date filter to below list, only get 1 day before
@@ -33,15 +36,15 @@ for each in listing:
                     "text": {
                         "type": "mrkdwn",
                         "text": f"{each[1]}"
-                         f"\n Advertiser: {each[2]}"
+                        f"\n Advertiser: {each[2]}"
                     }
         }
-            ]
-        }
+    ]
+}
 
-    slack_response = requests.post(webook, json=payload, headers={'Content-type': 'application/json'})
+    slack_response = requests.post(webhook, json=payload, headers={'Content-type': 'application/json'})
     slack_response.raise_for_status()
-#send it to slack
+# #send it to slack
 
 
 
