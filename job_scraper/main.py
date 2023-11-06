@@ -2,7 +2,8 @@ from bs4 import BeautifulSoup
 import json
 import requests
 from secret_manager import SecretsHelper
-
+from datetime import date, datetime,timedelta
+from date_filter import DateHelper
 
 #set variables for url
 siteKey = 'NZ-Main'
@@ -16,16 +17,16 @@ secrets_helper = SecretsHelper ()
 webhook = secrets_helper.get_secret()
 headers  = {'Content-type': 'application/x-www-form-urlencoded'}
 
-#adding date filter to below list, only get 1 day before
+dt = DateHelper()
 listing = []
-
 listing_details = {
     listing.append(
         (item ["id"],
         item["title"],
         item["advertiser"]["description"]
         )
-        ) for item in data
+        ) for item in data 
+        if dt.same_time_yesterday() < dt.date_helper(item["listingDate"])
         }
 
 for each in listing:
@@ -42,9 +43,10 @@ for each in listing:
     ]
 }
 
-    slack_response = requests.post(webhook, json=payload, headers={'Content-type': 'application/json'})
-    slack_response.raise_for_status()
 # #send it to slack
+slack_response = requests.post(webhook, json=payload, headers={'Content-type': 'application/json'})
+slack_response.raise_for_status()
+
 
 
 
