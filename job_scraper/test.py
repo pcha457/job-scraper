@@ -39,7 +39,6 @@ def main():
             }
         ]
     }
-
     # #send it to slack
         slack_response = requests.post(webhook, json=payload, headers={'Content-type': 'application/json'})
         slack_response.raise_for_status()
@@ -48,5 +47,5 @@ def main():
 
 def lambda_handler(event, context):
     main()
-   
+
 

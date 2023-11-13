@@ -9,6 +9,6 @@ class DateHelper:
         date_obj = datetime.strptime(string, '%Y-%m-%d')
         return date_obj
 
-    def same_time_yesterday (self, number_of_days = 1):
+    def same_time_yesterday (self, number_of_days = 4):
         date = datetime.today() - timedelta(days=number_of_days)
         return date 

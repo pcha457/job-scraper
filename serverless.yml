@@ -1,0 +1,21 @@
+app: job-scraper
+org: pennycbb
+service: job-scraper
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.9
+
+functions:
+  job-scraper:
+    handler: job_scraper/main.lambda_handler
+    name: dev
+    events:
+      # Invoke Lambda function 
+      - schedule: 
+        name: daily
+        description: "Calls the Lambda function to scrape the website during the week + Saturday until mid day"
+        rate: cron(0 18-9 ? * SUN-FRI *)
+        timezone: Pacific/Auckland
