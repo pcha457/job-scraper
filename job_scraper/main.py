@@ -1,4 +1,3 @@
-from bs4 import BeautifulSoup
 import json
 import requests
 from secret_manager import SecretsHelper
@@ -25,7 +24,7 @@ def main():
     db = DynamoHelper ()
     for each in listing:
     #saving listing to the dynamodb
-        db.add_data(each [0], each[1], each[2])
+        # db.add_data(each [0], each[1], each[2])
     #create payload for slack
         payload = {
                 "blocks": [

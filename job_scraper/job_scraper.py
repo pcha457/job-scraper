@@ -1,6 +1,7 @@
 import json
 import requests
 from date_filter import DateHelper
+# import urllib3
 
 
 class JobScraper:
@@ -13,8 +14,11 @@ class JobScraper:
 
     def scrape_list (self) -> set:
         url = f"https://www.seek.co.nz/api/chalice-search/v4/search?siteKey={self.siteKey}&sourcesystem=houston&where=All+New+Zealand&page=1&seekSelectAllPages=true&keywords=Data+Engineer&include=seodata&locale=en-NZ"
+        # http = urllib3.PoolManager()
         response = requests.get (url)
+        # response = http.request('GET',url)
         data = response.json()["data"]
+        
 
         return set (
             (

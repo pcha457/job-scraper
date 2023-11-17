@@ -8,11 +8,13 @@ class DynamoHelper:
         """
         :param dyn_resource: A Boto3 DynamoDB resource.
         """
-        self.session = boto3.session.Session(profile_name="admin")
-        self.dynamodb = self.session.resource(
-            service_name='dynamodb',
-            region_name="ap-southeast-2"
-        )
+        # self.session = boto3.session.Session(profile_name="admin")
+        # self.dynamodb = self.session.resource(
+        #     service_name='dynamodb',
+        #     region_name="ap-southeast-2"
+        # )
+        self.dynamodb = boto3.resource("dynamodb", region_name="ap-southeast-2")
+
         # The table variable is set during the scenario in the call to
         # 'exists' if the table exists. Otherwise, it is set by 'create_table'.
         self.table = self.dynamodb.Table('job-listing')
