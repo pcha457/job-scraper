@@ -9,7 +9,7 @@ class SecretsHelper():
         # Create a Secrets Manager client
         #remove session when using lambda
         # self.session = boto3.session.Session(profile_name="admin")
-        # #update it to boto3.client
+        # # #update it to boto3.client
         # self.client = self.session.client(
         #     service_name='secretsmanager',
         #     region_name="ap-southeast-2"

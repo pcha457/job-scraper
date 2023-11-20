@@ -2,7 +2,6 @@ import boto3
 from botocore.exceptions import ClientError
 
 class DynamoHelper:
-    """Encapsulates an Amazon DynamoDB table of movie data."""
 
     def __init__(self):
         """
@@ -11,7 +10,7 @@ class DynamoHelper:
         # self.session = boto3.session.Session(profile_name="admin")
         # self.dynamodb = self.session.resource(
         #     service_name='dynamodb',
-        #     region_name="ap-southeast-2"
+        # #     region_name="ap-southeast-2"
         # )
         self.dynamodb = boto3.resource("dynamodb", region_name="ap-southeast-2")
 

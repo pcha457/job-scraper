@@ -9,17 +9,20 @@ class JobScraper:
         #expend variables for the url 
         self.siteKey = 'NZ-Main'
         self.dt = DateHelper()
+        #empty set for looping pages
         self.listings = set()
 
 
-    def scrape_list (self) -> set:
-        url = f"https://www.seek.co.nz/api/chalice-search/v4/search?siteKey={self.siteKey}&sourcesystem=houston&where=All+New+Zealand&page=1&seekSelectAllPages=true&keywords=Data+Engineer&include=seodata&locale=en-NZ"
+    def scrape_list (self, page) -> set:
+        """
+
+        """
+        url = f"https://www.seek.co.nz/api/chalice-search/v4/search?siteKey={self.siteKey}&sourcesystem=houston&where=All+New+Zealand&page={page}&seekSelectAllPages=true&keywords=Data+Engineer&include=seodata&locale=en-NZ"
         # http = urllib3.PoolManager()
         response = requests.get (url)
         # response = http.request('GET',url)
         data = response.json()["data"]
         
-
         return set (
             (
                 item["id"],
@@ -27,6 +30,36 @@ class JobScraper:
                 item["advertiser"]["description"]
             )
             for item in data 
-            if self.dt.same_time_yesterday(number_of_days = 2) < self.dt.date_helper(item["listingDate"])
+            if self.dt.same_time_yesterday(number_of_days = 1) < self.dt.date_helper(item["listingDate"])
         )
+    
+    def scraping_all_pages (self):
+        """
+        Get all page listing 
+
+        return:
+            {set} -- An union collections of ids, title, advertiser 
+
+        """
+        #set init page value to 1
+        current_page = 1 
+        while True:
+            # assume second time self.listings end as 2 
+            # when starting the third time, current_listing will equal to 2 as the second time
+            current_listing = self.listings
+            # new listing is 0 
+            current_page_listing = self.scrape_list (current_page)
+            # adding 0 to 2 as new self.listings
+            self.listings = current_listing.union(current_page_listing)
+            # current_listing from 2nd is 2, 3rd self.listings is also 2 
+            if current_listing == self.listings:
+                return current_listing
+                break
+            current_page += 1 
+
+            
+
+
+        
+
 

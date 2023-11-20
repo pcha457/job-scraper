@@ -1,10 +1,10 @@
 import json
 import requests
-from secret_manager import SecretsHelper
 from datetime import date, datetime,timedelta
 from date_filter import DateHelper
 from dynamo_helper import DynamoHelper
-from job_scraper import JobScraper
+from job_scraper import JobScraper 
+from slack_helper import SlackHelper
 import datetime
 import logging
 
@@ -12,40 +12,24 @@ import logging
 def main():
     #connect to slack 
     #secrect_name: pennyc-slack-webhook
-    secrect = SecretsHelper ()
-    webhook = secrect.get_secret()
-    headers = {'Content-type': 'application/x-www-form-urlencoded'},
 
     scraper = JobScraper ()
-    listing = scraper.scrape_list ()
+    listing = scraper.scraping_all_pages ()
     print (listing)
 
     #function that adding the list to dynamodb 
-    db = DynamoHelper ()
-    for each in listing:
-    #saving listing to the dynamodb
-        # db.add_data(each [0], each[1], each[2])
-    #create payload for slack
-        payload = {
-                "blocks": [
-                    {
-                        "type": "section",
-                        "text": {
-                            "type": "mrkdwn",
-                            "text": f"{each[1]}"
-                            f"\n Advertiser: {each[2]}"
-                        }
-            }
-        ]
-    }
+    # db = DynamoHelper ()
+    job_notify = SlackHelper()
+    if len(listing) == 0:
+        text = "No jobs in these two days"
+        job_notify.notify_none (text)
 
     # #send it to slack
-        slack_response = requests.post(webhook, json=payload, headers={'Content-type': 'application/json'})
-        slack_response.raise_for_status()
-
-
+    # job_notify = SlackHelper()
+    job_notify.notify_new_listings (listing)
 
 def lambda_handler(event, context):
     main()
    
 
+main()
