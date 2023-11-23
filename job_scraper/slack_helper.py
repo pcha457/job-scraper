@@ -68,7 +68,7 @@ class SlackHelper():
     			"type": "mrkdwn",
     			"text": f"{text}"
     		}
-                }
+        }
 
     ]
 }

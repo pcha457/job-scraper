@@ -5,9 +5,9 @@ from date_filter import DateHelper
 
 
 class JobScraper:
-    def __init__ (self):
+    def __init__ (self, country):
         #expend variables for the url 
-        self.siteKey = 'NZ-Main'
+        self.country = country
         self.dt = DateHelper()
         #empty set for looping pages
         self.listings = set()
@@ -17,7 +17,22 @@ class JobScraper:
         """
 
         """
-        url = f"https://www.seek.co.nz/api/chalice-search/v4/search?siteKey={self.siteKey}&sourcesystem=houston&where=All+New+Zealand&page={page}&seekSelectAllPages=true&keywords=Data+Engineer&include=seodata&locale=en-NZ"
+        #creating a nesting Dictionary to store 
+        country_dic ={
+            "NZ": {
+                "siteKey": "NZ-Main", 
+                "where": "All+New+Zealand"
+                },
+            "AU": {
+                "siteKey": "AU-Main", 
+                "where": "All+Australia"
+            }
+
+        }
+        siteKey = country_dic.get(self.country).get("siteKey")
+        where = country_dic.get(self.country).get("where")
+
+        url = f"https://www.seek.co.nz/api/chalice-search/v4/search?siteKey={siteKey}&sourcesystem=houston&where={where}&page={page}&seekSelectAllPages=true&keywords=Data+Engineer&include=seodata&locale=en-NZ"
         # http = urllib3.PoolManager()
         response = requests.get (url)
         # response = http.request('GET',url)
@@ -30,7 +45,7 @@ class JobScraper:
                 item["advertiser"]["description"]
             )
             for item in data 
-            if self.dt.same_time_yesterday(number_of_days = 1) < self.dt.date_helper(item["listingDate"])
+            if self.dt.same_time_yesterday(number_of_days = 2) < self.dt.date_helper(item["listingDate"])
         )
     
     def scraping_all_pages (self):
@@ -56,6 +71,9 @@ class JobScraper:
                 return current_listing
                 break
             current_page += 1 
+
+    # def expend_job_list (self):
+
 
             
 

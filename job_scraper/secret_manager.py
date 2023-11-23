@@ -8,13 +8,13 @@ class SecretsHelper():
         """constructor method"""
         # Create a Secrets Manager client
         #remove session when using lambda
-        # self.session = boto3.session.Session(profile_name="admin")
+        self.session = boto3.session.Session(profile_name="admin")
         # # #update it to boto3.client
-        # self.client = self.session.client(
-        #     service_name='secretsmanager',
-        #     region_name="ap-southeast-2"
-        # )
-        self.client = boto3.client("secretsmanager", region_name="ap-southeast-2")
+        self.client = self.session.client(
+            service_name='secretsmanager',
+            region_name="ap-southeast-2"
+        )
+        # self.client = boto3.client("secretsmanager", region_name="ap-southeast-2")
         self.secret_name = "pennyc-slack-webhook"
 
     def get_secret(self):
