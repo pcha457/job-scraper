@@ -4,11 +4,20 @@ phases:
   install:
     runtime-versions:
       python: 3.9
+    commands:
+      - npm -v
+      - node -v
+      - npm install --no-progress -g serverless@3.35.2 --silent
+      - npm install --save-dev serverless-python-requirements --silent
   build:
     commands:
       - echo Build started on `date`
       - echo $CODEBUILD_SRC_DIR
+      - mkdir -p target/stg
+      - serverless package --package target/stg --stage stg -r ap-southeast-2 --verbose
 artifacts:
   files:
-    - '**/*'
+    - target/**/*
+    - serverless.yml
+    - buildspec-deploy.yml
   name: myname-$(date +%Y-%m-%d)  

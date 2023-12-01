@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.9
+    commands:
+      - npm -v
+      - node -v
+      - npm install --no-progress -g serverless@3.35.2 --silent
+      - npm install --save-dev serverless-python-requirements --silent
+      - npm install --save-dev serverless-iam-roles-per-function --silent
+      - apt update -qq
+      - apt install python3-pip -y -qq
+  build:
+    commands:
+      - which python
+      - python --version
+      - serverless deploy --stage $env --package $CODEBUILD_SRC_DIR/target/$env -r ap-southeast-2 --verbose
