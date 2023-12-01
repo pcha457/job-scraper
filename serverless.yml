@@ -7,10 +7,13 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: python3.7
+  environment:
+    STAGE: ${param:stage}
   stackName: dev-job-scraper
   region: ap-southeast-2
   deploymentBucket:
     name: job-scraper-artifacts
+    
 
 custom:
   pythonRequirements:
