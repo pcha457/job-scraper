@@ -9,9 +9,13 @@ phases:
       - node -v
       - npm install --no-progress -g serverless@3.35.2 --silent
       - npm install --save-dev serverless-python-requirements --silent
-      - apt update -qq
+      - dpkg -l | grep apt
+      - apt list --upgradable
       - apt install python3-pip -y -qq
-      - pip install poetry --quiet
+      - pip install --upgrade pip
+      - poetry self add poetry-plugin-export
+      - pipx install poetry
+      - pipx inject poetry poetry-plugin
   build:
     commands:
       - echo Build started on `date`
