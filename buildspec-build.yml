@@ -9,7 +9,8 @@ phases:
       - node -v
       - npm install --no-progress -g serverless@3.35.2 --silent
       - npm install --save-dev serverless-python-requirements --silent
-      - pipx install poetry
+      - npm install --save-dev serverless-iam-roles-per-function --silent
+      - apt-get update && apt install pipx
       - pipx inject poetry poetry-plugin
   build:
     commands:
