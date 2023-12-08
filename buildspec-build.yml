@@ -12,6 +12,7 @@ phases:
       - npm install --save-dev serverless-iam-roles-per-function --silent
       - apt-get update -qq && apt install python3-pip -y -qq
       - pip install poetry
+      - $POETRY_HOME/bin/pip install --user poetry-plugin
 
   build:
     commands:
