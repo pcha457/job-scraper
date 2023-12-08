@@ -13,7 +13,7 @@ phases:
       - apt-get update -qq && apt install python3-pip -y && apt install python3-venv -y && apt install python3-dev -y && apt install python3-virtualenv -y
       - pip install pipx
       - pipx install poetry
-      - pipx inject poetry poetry-plugin
+      - poetry self add poetry-plugin
 
   build:
     commands:
