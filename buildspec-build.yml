@@ -9,11 +9,16 @@ phases:
       - node -v
       - npm install --no-progress -g serverless@3.35.2 --silent
       - npm install --save-dev serverless-python-requirements --silent
+      - apt list --upgradable
+      - apt install python3-pip -y -qq
+      - pip install poetry --quiet
   build:
     commands:
       - echo Build started on `date`
       - echo $CODEBUILD_SRC_DIR
+      - poetry export --without-hashes -f requirements.txt -o requirements.txt --with-credentials
       - mkdir -p target/stg
+      - serverless login
       - serverless package --package target/stg --stage stg -r ap-southeast-2 --verbose
 artifacts:
   files:
