@@ -9,7 +9,7 @@ phases:
       - node -v
       - npm install --no-progress -g serverless@3.35.2 --silent
       - npm install --save-dev serverless-python-requirements --silent
-      - apt list --upgradable
+      - apt update -qq
       - apt install python3-pip -y -qq
       - pip install poetry --quiet
   build:
