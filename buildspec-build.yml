@@ -10,7 +10,8 @@ phases:
       - npm install --no-progress -g serverless@3.35.2 --silent
       - npm install --save-dev serverless-python-requirements --silent
       - npm install --save-dev serverless-iam-roles-per-function --silent
-      - apt-get update -qq && apt install pipx -y -qq & apt install python3.8-venv -y
+      - apt-get update -qq && apt install python3-pip -y && apt install python3-venv -y && apt install python3-dev -y && apt install python3-virtualenv -y
+      - pip install pipx
       - pipx install poetry
       - pipx inject poetry poetry-plugin
 
