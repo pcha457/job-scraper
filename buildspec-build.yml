@@ -14,7 +14,7 @@ phases:
       - pip install pipx
       - pipx install poetry 
       # Add poetry executable to the PATH
-      # - export PATH=$PATH:/root/.local/bin
+      - export PATH=$PATH:/root/.local/bin
       # Verify that poetry is now accessible in the PATH
       - poetry --version
       - poetry self add poetry-plugin-export
