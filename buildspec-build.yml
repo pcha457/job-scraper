@@ -12,7 +12,11 @@ phases:
       - npm install --save-dev serverless-iam-roles-per-function --silent
       - apt-get update -qq && apt install python3-pip -y && apt install python3-venv -y && apt install python3-dev -y && apt install python3-virtualenv -y
       - pip install pipx
-      - pipx install poetry
+      - pipx install poetry 
+      # Add poetry executable to the PATH
+      - export PATH=$PATH:/root/.local/bin
+      # Verify that poetry is now accessible in the PATH
+      - poetry --version
       - poetry self add poetry-plugin
 
   build:
@@ -23,6 +27,7 @@ phases:
       - mkdir -p target/stg
       - serverless login
       - serverless package --package target/stg --stage stg -r ap-southeast-2 --verbose
+      
 artifacts:
   files:
     - target/**/*
