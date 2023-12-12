@@ -7,11 +7,15 @@ phases:
     commands:
       - npm -v
       - node -v
+      #install Node.js packages 
+      #--no-progess, disable the display of a progress bar during the installation
+      #--silent, suppress informational messages during installation
       - npm install --no-progress -g serverless@3.35.2 --silent
       - npm install --save-dev serverless-python-requirements --silent
       - npm install --save-dev serverless-iam-roles-per-function --silent
-      - apt-get update -qq && apt install python3-pip -y && apt install python3-venv -y && apt install python3-dev -y && apt install python3-virtualenv -y
-      - pip install pipx
+      ##-qq same as --silent
+      - apt-get update -qq && apt install python3-pip -y -qq && apt install python3-venv -y -qq && apt install python3-dev -y -qq && apt install python3-virtualenv -y -qq
+      - pip install pipx --quiet
       - pipx install poetry 
       # Add poetry executable to the PATH
       - export PATH=$PATH:/root/.local/bin
@@ -21,8 +25,8 @@ phases:
 
   build:
     commands:
-      - echo Build started on `date`
-      - echo $CODEBUILD_SRC_DIR
+      - which python
+      - python --version
       - poetry export --without-hashes -f requirements.txt -o requirements.txt --with-credentials
       - mkdir -p target/stg
       - serverless login
