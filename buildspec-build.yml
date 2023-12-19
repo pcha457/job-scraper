@@ -1,6 +1,14 @@
 version: 0.2
 
 phases:
+
+  pre_build:
+    commands:
+      - export ACCESS_KEY_ID=$(aws ssm get-parameter --name "/ACCESS_KEY_ID" --with-decryption --query "Parameter.Value" --output text)
+      - echo "Retrieved ACCESS_KEY_ID: $ACCESS_KEY_ID"
+      - export ACCESS_KEY_ID=$(aws ssm get-parameter --name "/SECRET_ACCESS_KEY" --with-decryption --query "Parameter.Value" --output text)
+      - echo "Retrieved ACCESS_KEY_ID: $ACCESS_KEY_ID"
+
   install:
     runtime-versions:
       python: 3.9
@@ -29,8 +37,8 @@ phases:
       - python --version
       - poetry export --without-hashes -f requirements.txt -o requirements.txt --with-credentials
       - mkdir -p target/stg
-      - export AWS_ACCESS_KEY_ID=$ACCESS_KEY_ID
-      - export AWS_SECRET_ACCESS_KEY=$SECRET_ACCESS_KEY
+      # - export AWS_ACCESS_KEY_ID=$ACCESS_KEY_ID
+      # - export AWS_SECRET_ACCESS_KEY=$SECRET_ACCESS_KEY
       - serverless package --package target/stg --stage stg -r ap-southeast-2 --verbose
 
 artifacts:
