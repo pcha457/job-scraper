@@ -5,9 +5,9 @@ phases:
   pre_build:
     commands:
       - export ACCESS_KEY_ID=$(aws ssm get-parameter --name "/ACCESS_KEY_ID" --with-decryption --query "Parameter.Value" --output text)
-      - echo "Retrieved ACCESS_KEY_ID: $ACCESS_KEY_ID"
+      # - "echo Retrieved ACCESS_KEY_ID: '$ACCESS_KEY_ID'"
       - export ACCESS_KEY_ID=$(aws ssm get-parameter --name "/SECRET_ACCESS_KEY" --with-decryption --query "Parameter.Value" --output text)
-      - echo "Retrieved ACCESS_KEY_ID: $SECRET_ACCESS_KEY"
+      # - echo "Retrieved ACCESS_KEY_ID: $SECRET_ACCESS_KEY
 
   install:
     runtime-versions:
