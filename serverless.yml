@@ -14,12 +14,12 @@ custom:
     dockerizePip: non-linux
     usePoetry: false
 
-package:
-  exclude:
-    - node_modules/**
-    - package-lock.json
-    - requirements.txt
-    - __pycache__
+# package:
+#   exclude:
+#     - node_modules/**
+#     - package-lock.json
+#     - requirements.txt
+#     - __pycache__
 
 functions:
   job_scraper:
