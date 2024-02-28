@@ -1,27 +1,38 @@
 version: 0.2
 
 phases:
+
   install:
     runtime-versions:
       python: 3.9
     commands:
       - npm -v
       - node -v
+      #install Node.js packages 
+      #--no-progess, disable the display of a progress bar during the installation
+      #--silent, suppress informational messages during installation
       - npm install --no-progress -g serverless@3.35.2 --silent
       - npm install --save-dev serverless-python-requirements --silent
       - npm install --save-dev serverless-iam-roles-per-function --silent
+      ##-qq same as --silent
       - apt update -qq
       - apt install python3-pip -y -qq
       - pip install poetry --quiet
+      # Verify that poetry is now accessible in the PATH
+      - poetry --version
+
   build:
     commands:
       - which python
       - python --version
       - poetry export --without-hashes -f requirements.txt -o requirements.txt --with-credentials
       - mkdir -p target/stg
-      - serverless package --package target/stg --stage stg -r us-east-1 --verbose
+      - serverless package --package target/stg --stage stg -r ap-southeast-2 --verbose
+
+      
 artifacts:
   files:
     - target/**/*
     - serverless.yml
     - buildspec-deploy.yml
+  
