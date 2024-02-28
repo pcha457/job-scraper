@@ -1,17 +1,14 @@
-app: job-scraper
-org: pennycbb
 service: job-scraper
-
-frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: python3.11
+  runtime: python3.9
+  environment:
+    STAGE: ${opt:stage}
   stackName: dev-job-scraper
-  region: ap-southeast-2
   deploymentBucket:
     name: job-scraper-artifacts
-    
+
 custom:
   pythonRequirements:
     dockerizePip: non-linux
@@ -25,16 +22,33 @@ package:
     - __pycache__
 
 functions:
-  job-scraper:
-    handler: job_scraper/main.lambda_handler
-    name: job-scraping
+  job_scraper:
+    handler: job_scraper/scrape.lambda_handler
+    name: dev-job-scraper
+    timeout: 600
     events:
-      # Invoke Lambda function 
-      - eventBridge:
-          name: daily-job-post
-          schedule: cron(00 06 ? * SUN-FRI *)
-          description: "Daily Calls the Lambda function to scrape the website for the day"
-          timezone: Pacific/Auckland
+      - schedule:
+          name: job-scraper-week
+          description: "Calls the Lambda function to scrape the website during the week + Saturday until mid day"
+          rate: cron(0 18-9 ? * SUN-FRI *)
+      - schedule:
+          name: job-scraper-weekend
+          description: "Calls the Lambda function to scrape the website once on Sunday"
+          rate: cron(0 23 ? * SAT *)
+    iamRoleStatementsName: dev-job-scraper-role
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:PutItem
+        Resource:
+          - "*"
+      - Effect: "Allow"
+        Action:
+          - secretsmanager:GetSecretValue
+        Resource:
+          - "*"
+
+
 
 plugins:
   - serverless-python-requirements
