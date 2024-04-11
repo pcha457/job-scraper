@@ -1,7 +1,7 @@
 import boto3
 import json
 
-import main 
+import scraping 
 
 if __name__ == "__main__":
     boto3.setup_default_session(
@@ -9,11 +9,11 @@ if __name__ == "__main__":
     )
 
     
-    with open("job_filter.json") as file:
+    with open("job_scraper/job_filter.json") as file:
         filter = json.load(file)
         print (filter)
 
     for each in filter: 
-        main.main(
+        scraping.main(
            country=each.get("country")
         )

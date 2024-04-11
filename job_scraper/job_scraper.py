@@ -1,7 +1,9 @@
 import json
 import requests
-from date_filter import DateHelper
-# import urllib3
+##remotely
+# from botocore.vendored import requests
+from .date_filter import DateHelper
+import urllib3
 
 
 class JobScraper:
@@ -37,7 +39,9 @@ class JobScraper:
         response = requests.get (url)
         # response = http.request('GET',url)
         data = response.json()["data"]
-        
+        # response = json.loads(response.data)
+        # data  = response["data"]
+
         return set (
             (
                 item["id"],
@@ -45,7 +49,7 @@ class JobScraper:
                 item["advertiser"]["description"]
             )
             for item in data 
-            if self.dt.same_time_yesterday(number_of_days = 2) < self.dt.date_helper(item["listingDate"])
+            if self.dt.same_time_yesterday(number_of_days = 1) < self.dt.date_helper(item["listingDate"])
         )
     
     def scraping_all_pages (self):
@@ -73,10 +77,6 @@ class JobScraper:
             current_page += 1 
 
     # def expend_job_list (self):
-
-
-            
-
 
         
 

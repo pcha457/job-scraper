@@ -1,5 +1,6 @@
 import requests
-from secret_manager import SecretsHelper
+# from botocore.vendored import requests
+from .secret_manager import SecretsHelper
 
 class SlackHelper():
     def __init__(self):
@@ -29,7 +30,7 @@ class SlackHelper():
             else:
                 return status_code
 
-    def notify_new_listings (self, listings: list) -> None:
+    def notify_new_listings (self, listings: list, country: str) -> None:
         
         """job notify on slack channal
         
@@ -46,6 +47,7 @@ class SlackHelper():
                             "type": "mrkdwn",
                             "text": f"{each[1]}"
                             f"\n Advertiser: {each[2]}"
+                            f"\n Country: {country}"
                         }
             }
         ]

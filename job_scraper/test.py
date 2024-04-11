@@ -1,11 +1,11 @@
 from bs4 import BeautifulSoup
 import json
 import requests
-from secret_manager import SecretsHelper
+from .secret_manager import SecretsHelper
 from datetime import date, datetime,timedelta
-from date_filter import DateHelper
-from dynamo_helper import DynamoHelper
-from job_scraper import JobScraper
+from .date_filter import DateHelper
+from .dynamo_helper import DynamoHelper
+from .job_scraper import JobScraper
 import datetime
 import logging
 
@@ -17,8 +17,8 @@ def main():
     webhook = secrect.get_secret()
     headers = {'Content-type': 'application/x-www-form-urlencoded'},
 
-    scraper = JobScraper ()
-    listing = scraper.scrape_list ()
+    scraper = JobScraper (country=country)
+    listing = scraper.scrape_list (page=page)
     print (listing)
 
     #function that adding the list to dynamodb 
@@ -35,6 +35,7 @@ def main():
                             "type": "mrkdwn",
                             "text": f"{each[1]}"
                             f"\n Advertiser: {each[2]}"
+                            f"\n Country: {country}"
                         }
             }
         ]
@@ -43,9 +44,9 @@ def main():
         slack_response = requests.post(webhook, json=payload, headers={'Content-type': 'application/json'})
         slack_response.raise_for_status()
 
+        print(slack_response.raise_for_status())
 
 
 def lambda_handler(event, context):
     main()
-
 
