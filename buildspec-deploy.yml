@@ -16,4 +16,5 @@ phases:
     commands:
       - which python
       - python --version
+      - echo $CODEBUILD_SRC_DIR
       - serverless deploy --stage dev --package $CODEBUILD_SRC_DIR/target/dev -r ap-southeast-2 --verbose
