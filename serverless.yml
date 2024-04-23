@@ -6,9 +6,9 @@ provider:
   region: ap-southeast-2
   environment:
     STAGE: ${opt:stage}
-  stackName: dev-job-scraper
+  stackName: dev1-job-scraper
   deploymentBucket:
-    name: dev-job-scraper-artifacts
+    name: job-scraper-artifacts
     
 custom:
   pythonRequirements:
